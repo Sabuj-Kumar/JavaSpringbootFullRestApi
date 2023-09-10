@@ -1,11 +1,22 @@
 package com.backend.blog.payloads;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+
 public class UserDto {
 
 	private int id;
+
+	@NotEmpty
+	@Size(min = 4,message = "User must be minimum 4 charecter")
 	private String name;
+	@Email(message = "Email Address is not valid!!")
 	private String email;
+	@NotEmpty
+	@Size(min=5,max = 15,message = "Password min 6 and max 15")
 	private String password;
+	@NotEmpty
 	private String about;
 	
 	public int getId() {
