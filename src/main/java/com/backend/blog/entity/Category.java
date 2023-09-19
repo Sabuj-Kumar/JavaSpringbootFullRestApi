@@ -19,7 +19,7 @@ public class Category {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer categoryId;
+	private Long categoryId;
 	
 	@Column(name="title",length =100,nullable = false)
 	private String categoryTitle;
@@ -27,7 +27,7 @@ public class Category {
 	@Column(name="discription")
 	private String discription;
 	
-	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "category",fetch = FetchType.EAGER)
 	List<Post> posts = new ArrayList<Post>();
 	
 	public Category() {
@@ -43,11 +43,11 @@ public class Category {
 		this.posts = posts;
 	}
 
-	public Integer getCategoryId() {
+	public Long getCategoryId() {
 		return categoryId;
 	}
 
-	public void setCategoryId(Integer categoryId) {
+	public void setCategoryId(Long categoryId) {
 		this.categoryId = categoryId;
 	}
 

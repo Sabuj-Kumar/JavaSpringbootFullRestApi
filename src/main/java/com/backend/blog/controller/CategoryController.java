@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.blog.payloads.ApiResponse;
 import com.backend.blog.payloads.CategoryDto;
+import com.backend.blog.payloads.CategoryResponse;
 import com.backend.blog.services.CategoryService;
 
 import jakarta.validation.Valid;
@@ -36,7 +38,7 @@ public class CategoryController {
 	}
 	
 	@PutMapping("/{catId}")
-	public ResponseEntity<CategoryDto> updateCategory(@Valid @RequestBody CategoryDto categoryDto,@PathVariable("catId") Integer id){
+	public ResponseEntity<CategoryDto> updateCategory(@Valid @RequestBody CategoryDto categoryDto,@PathVariable("catId") Long id){
 		
 		CategoryDto updatedCategoryDto = this.categoryService.updateCetagory(categoryDto, id);
 		
@@ -44,7 +46,7 @@ public class CategoryController {
 	}
 	
 	@DeleteMapping("/{catId}")
-	public ResponseEntity<ApiResponse> deleteCategory(@PathVariable("catId") Integer id){
+	public ResponseEntity<ApiResponse> deleteCategory(@PathVariable("catId") Long id){
 		
 		this.categoryService.deleteCategory(id);
 		
@@ -52,7 +54,7 @@ public class CategoryController {
 	}
 	
 	@GetMapping("/{catId}")
-	public ResponseEntity<CategoryDto> getCategory(@PathVariable("catId") Integer id){
+	public ResponseEntity<CategoryDto> getCategory(@PathVariable("catId") Long id){
 		
 		CategoryDto updatedCategoryDto = this.categoryService.getCetagory(id);
 		
@@ -60,10 +62,13 @@ public class CategoryController {
 	}
 	
 	@GetMapping("/")
-	public ResponseEntity<List<CategoryDto>> getCategories(){
+	public ResponseEntity<CategoryResponse> getCategories(
+			@RequestParam(value ="pageNumber", defaultValue = "0",required = false) Integer pageNumber,
+			@RequestParam(value ="pageSize", defaultValue = "5",required = false) Integer pageSize
+			){
 		 
-		List<CategoryDto> updatedCategoryDto = this.categoryService.getCetagories();
+		CategoryResponse updatedCategoryDto = this.categoryService.getCetagories(pageNumber,pageSize);
 		
-		return new ResponseEntity<List<CategoryDto>>(updatedCategoryDto,HttpStatus.OK); 
+		return new ResponseEntity<CategoryResponse>(updatedCategoryDto,HttpStatus.OK); 
 	}
 }

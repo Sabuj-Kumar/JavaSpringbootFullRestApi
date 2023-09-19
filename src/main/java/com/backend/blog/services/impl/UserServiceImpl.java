@@ -5,11 +5,15 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.backend.blog.entity.User;
 import com.backend.blog.exceptions.ResourceNotFoundExceptions;
 import com.backend.blog.payloads.UserDto;
+import com.backend.blog.payloads.UserResponse;
 import com.backend.blog.repositories.UserRepository;
 import com.backend.blog.services.UserService;
 
@@ -32,7 +36,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDto updateUser(UserDto userDto, Integer id) {
+	public UserDto updateUser(UserDto userDto, Long id) {
 		User user = this.userRepo.findById(id).orElseThrow(() -> new ResourceNotFoundExceptions("User not found", " Id ", id));
 
 		user.setName(userDto.getName());
@@ -48,23 +52,35 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDto getUserById(Integer userid) {
+	public UserDto getUserById(Long userid) {
 		User user = this.userRepo.findById(userid).orElseThrow(() -> new ResourceNotFoundExceptions("User not found", " Id ", userid));
 
 		return this.UserTouserDto(user);
 	}
 
 	@Override
-	public List<UserDto> getAllUsers() {
-
-		List<User> users = this.userRepo.findAll();
+	public UserResponse getAllUsers(Integer pageNumber,Integer pageSize) {
+        
+		Pageable p = PageRequest.of(pageNumber, pageSize); 
+		Page<User> usersPageList = this.userRepo.findAll(p);
+		List<User> users = usersPageList.getContent();
+		
 		List<UserDto> UserDtos = users.stream().map(user -> this.UserTouserDto(user)).collect(Collectors.toList());
 		
-		return UserDtos;
+		UserResponse userResponse = new UserResponse();
+		
+		userResponse.setContent(UserDtos); 
+		userResponse.setPageNumber(usersPageList.getNumber());
+		userResponse.setPageSize(usersPageList.getSize());
+		userResponse.setTotalElements(usersPageList.getTotalElements());
+		userResponse.setTotalPages(usersPageList.getTotalPages());
+		userResponse.setLastPage(usersPageList.isLast());
+		
+		return userResponse;
 	}
 
 	@Override
-	public void deleteUser(Integer id) {
+	public void deleteUser(Long id) {
 		
 		User user = this.userRepo.findById(id).orElseThrow(() -> new ResourceNotFoundExceptions("User not found"," Id ",id));
 		

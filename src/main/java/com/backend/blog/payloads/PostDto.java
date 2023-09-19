@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class PostDto {
 
-	private Integer id;
+	private Long id;
 	
 	private String title;
 	
@@ -22,11 +22,11 @@ public class PostDto {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getImageName() {

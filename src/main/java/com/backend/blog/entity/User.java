@@ -31,7 +31,7 @@ public class User {
 	
 	private String about;
 	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
 	List<Post> posts = new ArrayList<Post>();
 	
 	public List<Post> getPosts() {

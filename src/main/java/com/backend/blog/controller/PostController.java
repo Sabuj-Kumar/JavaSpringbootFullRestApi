@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.blog.payloads.ApiResponse;
 import com.backend.blog.payloads.PostDto;
+import com.backend.blog.payloads.PostResponse;
 import com.backend.blog.services.PostService;
 
 @RestController
@@ -28,8 +30,8 @@ public class PostController {
 	@PostMapping("user/{userId}/category/{categoryId}/posts")
 	public ResponseEntity<PostDto> createPost(
 			@RequestBody PostDto postDtio,
-			@PathVariable Integer userId,
-			@PathVariable Integer categoryId
+			@PathVariable Long userId,
+			@PathVariable Long categoryId
 			){
 		
 		PostDto newPostDto = this.postService.createPost(postDtio, userId, categoryId);
@@ -40,7 +42,7 @@ public class PostController {
 	@PutMapping("post/{postId}")
 	public ResponseEntity<PostDto> updatePost(
 			@RequestBody PostDto postDtio,
-			@PathVariable Integer postId
+			@PathVariable Long postId
 			){
 		
 		PostDto newPostDto = this.postService.update(postDtio, postId);
@@ -50,7 +52,7 @@ public class PostController {
 	
 	@GetMapping("user/{userId}/post")
 	public ResponseEntity<List<PostDto>> getAllPostByUser(
-			@PathVariable Integer userId
+			@PathVariable Long userId
 			){
 		
 		List<PostDto> posts = this.postService.getAllPostByUser(userId);
@@ -60,7 +62,7 @@ public class PostController {
 	
 	@GetMapping("category/{categoryId}/post")
 	public ResponseEntity<List<PostDto>> getAllPostByCategory(
-			@PathVariable Integer categoryId
+			@PathVariable Long categoryId
 			){
 		
 		List<PostDto> posts = this.postService.getAllPostByCategory(categoryId);
@@ -69,16 +71,21 @@ public class PostController {
 	}
 	
 	@GetMapping("posts")
-	public ResponseEntity<List<PostDto>> getAllPost(){
+	public ResponseEntity<PostResponse> getAllPost(
+			@RequestParam(value ="pageNumber", defaultValue = "0",required = false) Integer pageNumber,
+			@RequestParam(value ="pageSize", defaultValue = "5",required = false) Integer pageSize,
+			@RequestParam(value ="sortBy", defaultValue = "id",required = false) String sortBy,
+			@RequestParam(value ="sortDirection", defaultValue = "id",required = false) String sortDirection
+			){
 		
-		List<PostDto> posts = this.postService.getAllPost();
+		PostResponse postResponse = this.postService.getAllPost(pageNumber,pageSize,sortBy,sortDirection);
 		 
-		return new ResponseEntity<List<PostDto>>(posts,HttpStatus.OK);
+		return new ResponseEntity<PostResponse>(postResponse,HttpStatus.OK);
 	}
 	
 	@GetMapping("posts/{postId}")
 	public ResponseEntity<PostDto> getPost(
-			@PathVariable Integer postId
+			@PathVariable Long postId
 			){
 		
 		PostDto posts = this.postService.getById(postId); 
@@ -88,7 +95,7 @@ public class PostController {
 	
 	@DeleteMapping("posts/{postId}")
 	public ApiResponse deletePost(
-			@PathVariable Integer postId
+			@PathVariable Long postId
 			){
 		
 		this.postService.deletePost(postId); 

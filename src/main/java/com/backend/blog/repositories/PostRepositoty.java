@@ -8,7 +8,7 @@ import com.backend.blog.entity.Category;
 import com.backend.blog.entity.Post;
 import com.backend.blog.entity.User;
 
-public interface PostRepositoty extends JpaRepository<Post,Integer>{
+public interface PostRepositoty extends JpaRepository<Post,Long>{
 
 	List<Post> findByUser(User user);
 	List<Post> findByCategory(Category category);

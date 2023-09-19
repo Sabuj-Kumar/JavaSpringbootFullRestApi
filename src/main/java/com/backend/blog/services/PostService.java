@@ -3,22 +3,23 @@ package com.backend.blog.services;
 import java.util.List;
 
 import com.backend.blog.payloads.PostDto;
+import com.backend.blog.payloads.PostResponse;
 
 public interface PostService {
 
-	PostDto createPost(PostDto postDto,Integer userId,Integer categoryId);
+	PostDto createPost(PostDto postDto,Long userId,Long categoryId);
 	
-	PostDto update(PostDto postDto,Integer postId); 
+	PostDto update(PostDto postDto,Long postId); 
 	
-	PostDto getById(Integer postId);
+	PostDto getById(Long postId);
 	
-	void deletePost(Integer postId);
+	void deletePost(Long postId);
 	
-	List<PostDto> getAllPost();
+	PostResponse getAllPost(Integer pageNumber ,Integer pageSize,String sortBy,String sortDirection);
 	
-	List<PostDto> getAllPostByCategory(Integer categoryId);
+	List<PostDto> getAllPostByCategory(Long categoryId);
 	
-	List<PostDto> getAllPostByUser(Integer userId); 
+	List<PostDto> getAllPostByUser(Long userId); 
 	
 	List<PostDto> serchPosts(String pattern); 
 }

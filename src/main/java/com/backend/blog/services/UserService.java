@@ -1,14 +1,13 @@
 package com.backend.blog.services;
 
-import java.util.List;
-
 import com.backend.blog.payloads.UserDto;
+import com.backend.blog.payloads.UserResponse;
 
 public interface UserService {
 
 	UserDto createUser(UserDto user);
-	UserDto updateUser(UserDto user,Integer id);
-	UserDto getUserById(Integer userid);
-	List<UserDto> getAllUsers();
-	void deleteUser(Integer id);
+	UserDto updateUser(UserDto user,Long id);
+	UserDto getUserById(Long userid);
+	UserResponse getAllUsers(Integer pageNumber,Integer pageSize);
+	void deleteUser(Long id);
 }
