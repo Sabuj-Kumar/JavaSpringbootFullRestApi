@@ -127,8 +127,12 @@ public class PostServiceImpl implements PostService{
 
 	@Override
 	public List<PostDto> serchPosts(String pattern) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<Post> posts = this.postRepo.findByTitleContaining(pattern); 
+		
+		List<PostDto> postDtos = posts.stream().map((post)->this.modelMapper.map(post,PostDto.class)).collect(Collectors.toList());
+		
+		return postDtos;
 	}
 
 }
