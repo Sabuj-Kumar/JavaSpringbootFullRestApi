@@ -1,6 +1,10 @@
 package com.backend.blog.payloads;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import com.backend.blog.entity.Comments;
 
 public class PostDto {
 
@@ -18,6 +22,14 @@ public class PostDto {
 	
 	private CategoryDto category;
 	
+	private Set<CommentDto> comments = new HashSet<>();
+	
+	public Set<CommentDto> getComments() {
+		return comments;
+	}
+	public void setComments(Set<CommentDto> comments) {
+		this.comments = comments;
+	}
 	public PostDto() {
 		super();
 		// TODO Auto-generated constructor stub
