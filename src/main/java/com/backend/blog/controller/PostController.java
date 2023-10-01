@@ -128,7 +128,7 @@ public class PostController {
 		return new ResponseEntity<List<PostDto>>(lists,HttpStatus.OK);
 	}
 	
-	@PostMapping("/post/image/upload/{id}")
+	@PostMapping("post/image/upload/{id}")
 	public ResponseEntity<PostDto> uploadImage(
 			@RequestParam("image") MultipartFile image,
 			@PathVariable("id") Long id
@@ -145,7 +145,7 @@ public class PostController {
 		return new ResponseEntity<PostDto>(updatedPostDto,HttpStatus.OK);
 	}
 	
-	@GetMapping(value= "/post/image/{imageName}",produces= MediaType.IMAGE_JPEG_VALUE)
+	@GetMapping(value= "post/image/{imageName}",produces= MediaType.IMAGE_JPEG_VALUE)
 	public void downloadImage(
 			@PathVariable("imageName") String imageName,
 			HttpServletResponse response
