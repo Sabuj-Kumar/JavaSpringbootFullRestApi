@@ -11,8 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @SpringBootApplication
 public class SpringBackEndBlogProjectApplication {
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBackEndBlogProjectApplication.class, args);
 	}

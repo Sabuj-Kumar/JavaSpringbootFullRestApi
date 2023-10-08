@@ -1,9 +1,7 @@
 package com.backend.blog.security;
 
 import java.io.IOException;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
@@ -22,24 +19,14 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
-	
     @Autowired
-    private JWTTokenHelper jwtTokenHelper;
-
+    private JWTTokenHelper jwtHelper;
 
     @Autowired
-    @Lazy
     private UserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
-//        try {
-//            Thread.sleep(500);
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
-        //Authorization
 
         String requestHeader = request.getHeader("Authorization");
         //Bearer 2352345235sdfrsfgsdfsdf
@@ -51,25 +38,23 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             token = requestHeader.substring(7);
             try {
 
-                username = this.jwtTokenHelper.getUsernameFromToken(token);
+                username = this.jwtHelper.getUsernameFromToken(token);
 
             } catch (IllegalArgumentException e) {
-                logger.info("Illegal Argument while fetching the username !!");
+                
                 e.printStackTrace();
             } catch (ExpiredJwtException e) {
-                logger.info("Given jwt token is expired !!");
+               
                 e.printStackTrace();
             } catch (MalformedJwtException e) {
-                logger.info("Some changed has done in token !! Invalid Token");
+               
                 e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
 
             }
-
-
         } else {
-            logger.info("Invalid Header Value !! ");
+            
         }
 
 
@@ -79,7 +64,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
             //fetch user detail from username
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-            Boolean validateToken = this.jwtTokenHelper.validateToken(token, userDetails);
+            Boolean validateToken = this.jwtHelper.validateToken(token, userDetails);
             if (validateToken) {
 
                 //set the authentication
@@ -89,12 +74,14 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
 
             } else {
-                logger.info("Validation fails !!");
+               
             }
 
 
         }
 
         filterChain.doFilter(request, response);
+
+
     }
 }
