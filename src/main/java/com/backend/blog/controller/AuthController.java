@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.blog.payloads.AuthRequest;
 import com.backend.blog.payloads.JwtAuthResponse;
+import com.backend.blog.payloads.UserDto;
 import com.backend.blog.security.JWTTokenHelper;
+import com.backend.blog.services.UserService;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -26,6 +28,9 @@ public class AuthController {
 	@Autowired
 	private UserDetailsService userDetailsService;
 
+	@Autowired
+	private UserService userService;
+	
 	@Autowired
 	private AuthenticationManager manager;
 
@@ -60,4 +65,11 @@ public class AuthController {
 		return "Credentials Invalid !!";
 	}
 
+	@PostMapping("/register")
+	public ResponseEntity<UserDto> registrationUser(@RequestBody UserDto useDto){
+		
+		UserDto registerUser = this.userService.registrationNerUser(useDto);
+		
+		return new ResponseEntity<UserDto>(registerUser,HttpStatus.CREATED);
+	}
 }

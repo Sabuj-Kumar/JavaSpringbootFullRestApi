@@ -53,14 +53,10 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                 e.printStackTrace();
 
             }
-        } else {
-            
+        } else { 
         }
-
-
         //
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
 
             //fetch user detail from username
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
@@ -71,17 +67,10 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-
-
             } else {
                
             }
-
-
         }
-
         filterChain.doFilter(request, response);
-
-
     }
 }

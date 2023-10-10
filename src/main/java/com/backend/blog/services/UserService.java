@@ -5,6 +5,7 @@ import com.backend.blog.payloads.UserResponse;
 
 public interface UserService {
 
+	UserDto registrationNerUser(UserDto user);
 	UserDto createUser(UserDto user);
 	UserDto updateUser(UserDto user,Long id);
 	UserDto getUserById(Long userid);
